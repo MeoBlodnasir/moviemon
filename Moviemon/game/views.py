@@ -5,13 +5,15 @@ from . import forms
 
 def titlescreen(request):
     if (request.method == 'POST'):
-        form = forms.MyForm(request.POST)
-        if form.is_valid():
-            return HttpResponse(form.cleaned_data['submit'])
+        print(request.POST)
+        if 'A' in request.POST:
+            return render(request, "game/worldmap.html")
+        elif 'B' in request.POST:
+            return HttpResponse("other key")
         else:
-            return HttpResponse("OULQLQ")
+            return render(request, "game/controls.html")
+
 
     else:
-        form = forms.MyForm()
-    return render(request, "game/controls.html")
+        return render(request, "game/controls.html")
 
