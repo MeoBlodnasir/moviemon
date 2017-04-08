@@ -54,7 +54,7 @@ ROOT_URLCONF = 'Moviemon.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['game/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

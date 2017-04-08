@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+		<title>
+		{% block title %}
+		{% endblock %}
+		</title>
+	</head>
+	<body>
+		<p>
+		{% block content %}
+		{% endblock %}
+		</p>
+    {% include "game/controls.html" %}
+	</body>
+</html>
