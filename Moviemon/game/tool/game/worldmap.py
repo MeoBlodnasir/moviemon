@@ -4,15 +4,19 @@ import random
 from .Page import Page
 from . import elements as e
 from .elem import Text
+from .data import Data
 
-class worldmap:
+
+
+class worldmap(Data):
     movieballs = 0
     """docstring for worldmap."""
     def __init__(self, setting, user):
-        pass
+        self.load_default_settings()
         self.setting = setting
         self.user = user
-        # self.create_map(setting, user)
+        self.is_movies_found = False
+        self.create_map(setting, user, False)
 
     def random_meet(self, is_moving):
         attr = {}
@@ -21,11 +25,15 @@ class worldmap:
             if random.randrange(0, 3) == 0:
                 is_movieball = True
                 self.movieballs += 1
+                self.player_strength += 1
                 attr = {'src':'http://belleetcultivee.com/wp-content/uploads/2012/02/cd.gif'}
             if is_movieball == False:
                 if random.randrange(0, 3) == 0:
+                    movie = self.get_random_movie()
+                    self.is_movies_found = True
                     attr = {'src':'http://www.citel.fr/userfiles/medias/photo/Foudre_bleu.gif'}
         return attr
+
     def create_map(self, setting=None, user=None, is_moving=False):
         if setting == None:
             self.setting = self.setting
@@ -54,10 +62,15 @@ setting = {'x': 10, 'y' : 10}
 user = {'pos_x': 0, 'pos_y':0}
 
 map = worldmap(setting, user)
+# map.create_map(setting, user, is_moving)
 
 def worldmap_render(request):
     is_moving = False
+    map.is_movies_found = False
+
     if (request.method == 'POST'):
+        if 'A' in request.POST:
+            pass
         if 'Up' in request.POST:
             if (user['pos_y'] - 1) >= 0:
                 user['pos_y'] -= 1
@@ -74,6 +87,12 @@ def worldmap_render(request):
             if (user['pos_x'] - 1) >= 0:
                 user['pos_x'] -= 1
                 is_moving = True
-    map.create_map(setting, user, is_moving)
-    page = Page(e.Div(map.map))
-    return render(request, "game/worldmap.html", {'map':map.map})
+    mess_a = ''
+    if is_moving:
+        map.create_map(setting, user, is_moving)
+    if map.is_movies_found:
+        movie = map.get_random_movie()
+        mess_a = e.Div(Text('Enter a for the fight with ' + str(movie['title'])))
+    # page = Page(e.Div(map.map))
+    movieballs_nb = e.Div(Text(str(map.player_strength)))
+    return render(request, "game/worldmap.html", {'map':map.map, 'mess_a':mess_a, 'movieballs_nb':movieballs_nb})
