@@ -4,4 +4,5 @@ from . import views
 
 urlpatterns = [
         url(r'^$', views.titlescreen),
+        url(r'^worldmap$', views.worldmap),
         ]

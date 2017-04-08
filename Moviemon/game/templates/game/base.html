@@ -1,10 +1,15 @@
 <!doctype html>
 <html>
   <head>
-		<title>
+    <title>
 		{% block title %}
+      Moviemon
 		{% endblock %}
-		</title>
+  </title>
+    {% block style %}
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href={% static 'game/worldmap.css'   %} />
+      {% endblock %}
 	</head>
 	<body>
 		<p>
