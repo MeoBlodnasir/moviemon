@@ -118,3 +118,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MOVIES = [
+        "Warrior",
+        "Saving Christmas",
+        "The Bat People",
+        "Survival Island",
+        "Monsters",
+        "Manchester by the Sea",
+        "Dallas Buyers Club",
+        "Snatch",
+        "Jurassic Park",
+        "Alien"
+        ]
