@@ -3,6 +3,7 @@ from . import elements as e
 from .data import Data
 from .elem import Text
 import os
+from django.conf import settings
 
 class Moviedex(Data):
     marker = 0
@@ -14,12 +15,13 @@ class Moviedex(Data):
         m = self.get_captured_movies()
         print(m)
         for elem in m:
-            if i == Moviedex.marker: 
+            if i == Moviedex.marker:
                 content.append(Text('==> '))
             content.append(Text(elem['title'] + "<br/>"))
             i += 1
         content.append(Text('<br/>A - Detail<br/>Select - Quit</br>'))
-        self.moviedex = e.Div(content, attr={'class':'containter'})
+        style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+        self.moviedex = e.Div(content, attr={'class':'container', 'style': style})
     def __str__(self):
         return str(self.moviedex)
 
@@ -31,7 +33,8 @@ class Movie(Data):
         self.movie = self.get_movie(movie.replace("_", " "))
         content.append(Text(str(self.movie)))
         content.append(Text('<br/>B - Back<br/>'))
-        self.movie = e.Div(content, attr={'class':'containter'})
+        style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+        self.movie = e.Div(content, attr={'class':'container', 'style': style})
     def __str__(self):
         return str(self.movie)
 
@@ -57,7 +60,3 @@ def moviedex_render(request):
             if 'Select' in request.POST:
                 return HttpResponseRedirect('/worldmap')
         return render(request, "game/moviedex.html", {'moviedex': Moviedex()})
-
-
-
-

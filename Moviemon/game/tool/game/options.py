@@ -3,11 +3,13 @@ from . import elements as e
 from .data import Data
 from .elem import Text
 import os
+from django.conf import settings
 
 class Options(Data):
     def __init__(self):
         content = [Text('A - Save<br/>B - Quit</br>Start - Cancel</br>')]
-        self.options = e.Div(content, attr={'class':'containter'})
+        style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+        self.options = e.Div(content, attr={'class':'container', 'style': style})
     def __str__(self):
         return str(self.options)
 
@@ -42,7 +44,8 @@ class Save(Data):
                 content.append(Text("   score: " + str(elem['score']) + "<br/>"))
             i += 1
         content.append(Text('A - Save<br/>B - Cancel</br>'))
-        self.text = e.Div(content, attr={'class':'containter'})
+        style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+        self.text = e.Div(content, attr={'class':'container', 'style': style})
     def __str__(self):
         return str(self.text)
 
@@ -79,7 +82,8 @@ class Load(Data):
                 content.append(Text("   score: " + str(elem['score']) + "<br/>"))
             i += 1
         content.append(Text('A - Load<br/>B - Cancel</br>'))
-        self.text = e.Div(content, attr={'class':'containter'})
+        style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+        self.text = e.Div(content, attr={'class':'container', 'style':style})
     def __str__(self):
         return str(self.text)
 

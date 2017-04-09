@@ -50,10 +50,12 @@ class worldmap(Data):
         content = []
         content.append(player)
 
+
+        content.append(e.Div(Text(str(self.player_strength))))
         if self.is_movies_found:
             content.append(e.Div(Text('Enter a for the fight with ' + str(self.movie['title']))))
-        content.append(e.Div(Text(str(self.player_strength))))
-        self.map = e.Div(content, attr={'class': 'container'})
+        style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+        self.map = e.Div(content, attr={'class': 'container', 'style': style})
 
         self.save_tmp()
 
@@ -68,7 +70,7 @@ def worldmap_render(request):
                 print('found')
                 return(HttpResponseRedirect('/battle/' + str(map.movie['title']).replace(' ', '_')))
         if 'Up' in request.POST:
-            if (map.player['pos_y'] - 1) >= 0:
+            if (map.player['pos_y'] - 1) >= 1:
                 map.player['pos_y'] -= 1
                 is_moving = True
         if 'Down' in request.POST:
@@ -80,7 +82,7 @@ def worldmap_render(request):
                 map.player['pos_x'] += 1
                 is_moving = True
         if 'Left' in request.POST:
-            if (map.player['pos_x'] - 1) >= 0:
+            if (map.player['pos_x'] - 1) >= 1:
                 map.player['pos_x'] -= 1
                 is_moving = True
         if 'Start' in request.POST:

@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 import random
+from django.conf import settings
 
 from .Page import Page
 from . import elements as e
@@ -9,7 +10,6 @@ from .data import Data
 class fight(Data):
     launch = False
     def __init__(self, moviemon=''):
-        print('---------init------------')
         self.load_default_settings()
         self.load_tmp()
         self.moviemon = self.get_movie(moviemon)
@@ -23,7 +23,8 @@ class fight(Data):
         content.append(e.Div(Text('Player force: ' + str(self.player_strength))))
         if fight.launch:
             content.append(e.Div(e.Text(self.mess)))
-        return str(e.Div(content, attr={'class':'container'}))
+        style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+        return str(e.Div(content, attr={'class':'container', 'style': style}))
 
     def set_moviemon(self, moviemon):
         self.mess = ''
@@ -64,7 +65,7 @@ class fight(Data):
         r = random.randrange(0, 100)
         if r <= c:
             self.is_captured = True
-            self.score += 1
+            Data.score += 1
             self.moviemon_captured.append(self.moviemon)
             self.mess = "You catched it"
         else:

@@ -24,12 +24,13 @@ class Data():
         saves.append({'name': 'b', 'free': True, 'score' : 0})
     if not glob.glob('saved_game/slotc*'):
         saves.append({'name': 'c', 'free': True, 'score' : 0})
+
     for i in os.listdir('saved_game'):
         if os.path.isfile(os.path.join('saved_game',i)) and 'slot' in i:
             if i[7:8] == '_':
-                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])}) 
+                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])})
             else:
-                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:8])}) 
+                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:8])})
 
 
     def load_default_settings(self):
@@ -106,7 +107,7 @@ class Data():
             if os.path.isfile('saved_game/tmp_save'):
                 self.load(pickle.load(open("saved_game/tmp_save", "rb")))
             else:
-                self.load({'player': {'pos_x': 0, 'pos_y': 0}, 'score': 0, 'player_strength': 0, 'is_movies_found': False, 'moviemon_captured': []})
+                self.load({'player': {'pos_x': 1, 'pos_y': 1}, 'score': 0, 'player_strength': 0, 'is_movies_found': False, 'moviemon_captured': []})
                 self.save_tmp()
         except Exception as e:
             print(e)
