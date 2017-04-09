@@ -69,8 +69,8 @@ class Data():
             if v['title'] == movie['title']:
                 return self.get_random_movie()
         return movie
-    def get_movies(self):
-        return self.movies
+    def get_captured_movies(self):
+        return self.moviemon_captured
     def get_movie(self, title):
         for elem in self.movies:
             if elem['title'] == title:

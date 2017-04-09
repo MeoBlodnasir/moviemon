@@ -9,7 +9,8 @@ class Moviedex(Data):
     def __init__(self):
         i = 0
         content = []
-        m = self.get_movies()
+        m = self.get_captured_movies()
+        print(m)
         for elem in m:
             if i == Moviedex.marker: 
                 content.append(Text('==> '))
@@ -40,7 +41,7 @@ def movie_render(request, moviemon):
 def moviedex_render(request):
         m = Moviedex()
         if (request.method == 'POST'):
-            if 'Down' in request.POST and Moviedex.marker < len(m.get_movies()) - 1:
+            if 'Down' in request.POST and Moviedex.marker < len(m.get_captured_movies()) - 1:
                 Moviedex.marker += 1
                 return render(request, "game/moviedex.html", {'moviedex': Moviedex()})
             if 'Up' in request.POST and Moviedex.marker > 0:
@@ -48,7 +49,7 @@ def moviedex_render(request):
                 return render(request, "game/moviedex.html", {'moviedex': Moviedex()})
             if 'A' in request.POST:
                 m = Moviedex()
-                return HttpResponseRedirect('/moviedex/'+ m.movies[Moviedex.marker]['title'].replace(" ", "_"))
+                return HttpResponseRedirect('/moviedex/'+ m.get_captured_movies()[Moviedex.marker]['title'].replace(" ", "_"))
             if 'Select' in request.POST:
                 return HttpResponseRedirect('/worldmap')
         return render(request, "game/moviedex.html", {'moviedex': Moviedex()})
