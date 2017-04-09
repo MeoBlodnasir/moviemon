@@ -18,6 +18,7 @@ class Data():
     movie = {}
     moviemon_captured = []
     is_captured = False
+    print("ONE TIMMMMMMMMMMMMMME")
     if not glob.glob('saved_game/slota*'):
         saves.append({'name': 'a', 'free': True, 'score' : 0})
     if not glob.glob('saved_game/slotb*'):
@@ -83,13 +84,17 @@ class Data():
     def save_slot(self, slot):
         try:
             if slot == 'a' or slot == 'b' or slot == 'c':
+                for i in os.listdir('saved_game'):
+                    if os.path.isfile(os.path.join('saved_game',i)) and 'slot' + slot in i:
+                        print("REMOVING FILE", i)
+                        os.remove(os.path.join('saved_game',i))
                 pickle.dump(pickle.load(open("saved_game/tmp_save", "rb")), open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "wb+" ))
                 for elem in self.saves:
                     if elem['name'] == slot:
                         elem['free'] = False
                         elem['score'] = self.score
         except Exception as e:
-            print(e)
+            print("exc", e)
 
     def load_slot(self, slot):
         try:

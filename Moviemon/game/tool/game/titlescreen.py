@@ -20,6 +20,7 @@ def titlescreen_render(request):
     if (request.method == 'POST'):
         if 'A' in request.POST:
             if (os.path.isfile("saved_game/tmp_save")):
+                print("removing tmp save")
                 os.remove("saved_game/tmp_save")
             return HttpResponseRedirect('/worldmap')
         if 'B' in request.POST:
