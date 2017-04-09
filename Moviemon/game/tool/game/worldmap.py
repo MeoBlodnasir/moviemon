@@ -97,7 +97,7 @@ def worldmap_render(request):
                 player['pos_x'] -= 1
                 is_moving = True
         if 'Start' in request.POST:
-            return(HttpResponseRedirect('/options'))
+            return HttpResponseRedirect('/options')
     if is_moving:
         map.create_map(setting, player, is_moving)
     # movieballs_nb =
