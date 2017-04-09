@@ -61,6 +61,7 @@ class worldmap(Data):
 
         if self.is_movies_found:
             content.append(e.Div(Text('Enter a for the fight with ' + str(self.movie['title']))))
+        content.append(e.Div(Text(str(self.player_strength))))
         self.map = e.Div(content, attr={'class': 'container'})
         print('save')
         self.save_tmp()
@@ -99,5 +100,5 @@ def worldmap_render(request):
             return(HttpResponseRedirect('/options'))
     if is_moving:
         map.create_map(setting, player, is_moving)
-    movieballs_nb = e.Div(Text(str(map.player_strength)))
-    return render(request, "game/worldmap.html", {'map':map, 'movieballs_nb':movieballs_nb})
+    # movieballs_nb =
+    return render(request, "game/worldmap.html", {'map':map})
