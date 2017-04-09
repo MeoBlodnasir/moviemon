@@ -41,7 +41,7 @@ class Data():
                 print(elem, r)
                 d = json.loads(r.text)
                 if 'Title' in d:
-                    self.movies.append({'title': d['Title'], 'rating' : d['imdbRating'], 'year' : d['Year'], 'director': d['Director']})
+                    self.movies.append({'title': d['Title'], 'rating' : d['imdbRating'], 'year' : d['Year'], 'director': d['Director'], 'poster' : d['Poster'], 'plot' : d['Plot'], 'actors' : d['Actors']})
         return self
 
     def load(self, dic):
@@ -87,6 +87,7 @@ class Data():
                 for elem in self.saves:
                     if elem['name'] == slot:
                         elem['free'] = False
+                        elem['score'] = self.score
         except Exception as e:
             print(e)
 
