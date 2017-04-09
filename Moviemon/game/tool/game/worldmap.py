@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 import random
 
 from .Page import Page
@@ -91,8 +91,8 @@ def worldmap_render(request):
             if (user['pos_x'] - 1) >= 0:
                 user['pos_x'] -= 1
                 is_moving = True
-        if 'Start' in request.Post:
-            HttpResponseRedirect('/options')
+        if 'Start' in request.POST:
+            return HttpResponseRedirect('/options')
     if is_moving:
         map.create_map(setting, user, is_moving)
     movieballs_nb = e.Div(Text(str(map.player_strength)))

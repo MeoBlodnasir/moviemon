@@ -36,16 +36,16 @@ class Data():
         for elem in self.movies:
             if elem['title'] == title:
                 return elem
-    def save(self, slot):
+    def save_slot(self, slot):
         if slot == 'a' or slot == 'b' or slot == 'c':
             pickle.dump(pickle.load(open("saved_game/tmp_save", "rb")), open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "wb+" ))
-            for elem in saves:
+            for elem in self.saves:
                 if elem['name'] == slot:
-                    elem['free'] = M#False
+                    elem['free'] = False
 
-    def load(self, slot):
+    def load_slot(self, slot):
         if (slot == 'a' or slot == 'b' or slot == 'c'):
-            for elem in saves:
+            for elem in self.saves:
                 if elem['name'] == slot and elem['free'] == False:
                     pickle.dump(pickle.load(open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "rb")),open("saved_game/tmp_save", "rb"))
                     self.load(pickle.load(open("saved_game/tmp_save", "rb")))
