@@ -22,3 +22,9 @@ def titlescreen(request):
 
 def worldmap(request):
     return (worldmap_render(request))
+
+def fight(request):
+    return (fight_render(request))
+
+def options(request):
+    return (options_render(request))
