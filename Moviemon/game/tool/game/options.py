@@ -37,7 +37,7 @@ class Save(Data):
         for elem in self.saves:
             if i == Save.marker:
                 content.append(Text('==> '))
-            content.append(Text("Slot {0} : ".format(elem['name'])))
+            content.append(Text("Slot {0} : ".format(elem['name']).upper()))
             if elem['free'] == True:
                 content.append(Text(" FREE<br/>"))
             else:
@@ -75,7 +75,7 @@ class Load(Data):
         for elem in self.saves:
             if i == Load.marker:
                 content.append(Text('==> '))
-            content.append(Text("Slot {0} : ".format(elem['name'])))
+            content.append(Text("Slot {0} : ".format(elem['name']).upper()))
             if elem['free'] == True:
                 content.append(Text(" FREE<br/>"))
             else:
