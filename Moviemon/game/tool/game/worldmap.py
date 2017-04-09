@@ -12,7 +12,6 @@ class worldmap(Data):
     movieballs = 0
     """docstring for worldmap."""
     def __init__(self, setting, user):
-        print("init --------------------------")
         self.load_default_settings()
         self.setting = setting
         self.user = user
@@ -60,7 +59,7 @@ class worldmap(Data):
 
         if self.is_movies_found:
             content.append(e.Div(Text('Enter a for the fight with ' + str(self.movie['title']))))
-        self.map = e.Div(content, attr={'class': 'container', 'style':'height: 1000px; width: 1000px; position:relative'})
+        self.map = e.Div(content, attr={'class': 'container', 'style':'height: ' + str(int(setting['h'])) + 'px; width: ' + str(int(setting['w'])) + 'px; position:relative'})
 
 setting = {'x': 10, 'y' : 10, 'h' : 1000, 'w' : 1000}
 user = {'pos_x': 0, 'pos_y':0}
