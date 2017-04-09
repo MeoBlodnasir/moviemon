@@ -40,7 +40,7 @@ class Data():
                 print(elem, r)
                 d = json.loads(r.text)
                 if 'Title' in d:
-                    self.movies.append({'title': d['Title'], 'rating' : d['imdbRating'], 'year' : d['Year'], 'director': d['Director']})
+                    self.movies.append({'title': d['Title'], 'rating' : d['imdbRating'], 'year' : d['Year'], 'director': d['Director'], 'poster' : d['Poster'], 'plot' : d['Plot'], 'actors' : d['Actors']})
         return self
 
     def load(self, dic):

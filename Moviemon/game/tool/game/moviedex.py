@@ -29,7 +29,8 @@ class Movie(Data):
         self.load_tmp()
         content = []
         self.movie = self.get_movie(movie.replace("_", " "))
-        content.append(Text(str(self.movie)))
+        content.append(Text("{0} {1} {2} {3} {4} {5}".format(self.movie['title'], self.movie['year'], self.movie['director'], self.movie['plot'], self.movie['actors'], self.movie['rating'])))
+        content.append(e.Img(attr={'src': str(self.movie['poster'])}))
         content.append(Text('<br/>B - Back<br/>'))
         self.movie = e.Div(content, attr={'class':'containter'})
     def __str__(self):
