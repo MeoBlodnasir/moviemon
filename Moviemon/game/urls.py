@@ -9,4 +9,6 @@ urlpatterns = [
         url(r'^options/save_game$', views.save),
         url(r'^options/load_game$', views.load),
         url(r'^battle/(?P<movimone>\w+)$', views.fight),
+        url(r'^moviedex/(?P<moviemon>\w+)$', views.movie),
+        url(r'^moviedex$', views.moviedex),
         ]

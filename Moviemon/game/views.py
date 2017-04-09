@@ -7,6 +7,7 @@ from .tool.game.worldmap import worldmap, worldmap_render
 from .tool.game.options import Options, options_render, save_render, load_render
 from .tool.game.titlescreen import Titlescreen, titlescreen_render
 from .tool.game.fight import fight, fight_render
+from .tool.game.moviedex import Moviedex, moviedex_render, movie_render
 # Create your views here.
 
 def titlescreen(request):
@@ -26,3 +27,9 @@ def save(request):
 
 def load(request):
     return (load_render(request))
+
+def moviedex(request):
+    return (moviedex_render(request))
+
+def movie(request, moviemon=''):
+    return (movie_render(request, moviemon))

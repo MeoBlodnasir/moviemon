@@ -91,6 +91,8 @@ def worldmap_render(request):
                 is_moving = True
         if 'Start' in request.POST:
             return HttpResponseRedirect('/options')
+        if 'Select' in request.POST:
+            return HttpResponseRedirect('/moviedex')
     if is_moving:
         map.create_map(is_moving)
     # movieballs_nb =

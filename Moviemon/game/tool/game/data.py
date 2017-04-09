@@ -22,17 +22,18 @@ class Data():
         saves.append({'name': 'c', 'free': True, 'score' : 0})
     for i in os.listdir('saved_game'):
         if os.path.isfile(os.path.join('saved_game',i)) and 'slot' in i:
-            saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])})
+            saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])}) #TO CHANGE
 
 
     def load_default_settings(self):
         self.setting = {'x': 10, 'y' : 10, 'h' : 1000, 'w' : 1000}
-        for elem in settings.MOVIES:
-            r = requests.get("http://www.omdbapi.com/?t=" + elem.replace(" ", "+"))
-            print(elem, r)
-            d = json.loads(r.text)
-            if 'Title' in d:
-                self.movies.append({'title': d['Title'], 'rating' : d['imdbRating'], 'year' : d['Year'], 'director': d['Director']})
+        if len(self.movies) == 0:
+            for elem in settings.MOVIES:
+                r = requests.get("http://www.omdbapi.com/?t=" + elem.replace(" ", "+"))
+                print(elem, r)
+                d = json.loads(r.text)
+                if 'Title' in d:
+                    self.movies.append({'title': d['Title'], 'rating' : d['imdbRating'], 'year' : d['Year'], 'director': d['Director']})
         return self
 
     def load(self, dic):
@@ -51,10 +52,13 @@ class Data():
         return {'movies': self.movies, 'player_strength' : self.player_strength, 'score': self.score, 'saves': self.saves, 'player': self.player}
     def get_random_movie(self):
         return random.choice(list(self.movies))
+    def get_movies(self):
+        return self.movies
     def get_movie(self, title):
         for elem in self.movies:
             if elem['title'] == title:
                 return elem
+        return {'title': 'unknown'}
     def save_slot(self, slot):
         if slot == 'a' or slot == 'b' or slot == 'c':
             pickle.dump(pickle.load(open("saved_game/tmp_save", "rb")), open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "wb+" ))
