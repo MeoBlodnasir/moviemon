@@ -126,6 +126,8 @@ STATICFILES_DIRS = [
              ]
 
 
+MAP = {'x': 10, 'y' : 10, 'h' : 1000, 'w' : 1000}
+
 MOVIES = [
         "Warrior",
         "Saving Christmas",

@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 import random
-
+from django.conf import settings
 from .Page import Page
 from . import elements as e
 from .elem import Text
@@ -15,7 +15,6 @@ class worldmap(Data):
         self.load_default_settings()
         self.load_tmp()
         self.create_map(False)
-        self.setting = {'x': 10, 'y' : 10, 'h' : 1000, 'w' : 1000} # TODO: a set dans les setting
 
     def __str__(self):
         return str(self.map)
@@ -40,8 +39,8 @@ class worldmap(Data):
 
     def create_map(self, is_moving=False):
         self.random_meet(is_moving)
-        top = self.player['pos_y'] * self.setting['h'] / self.setting['y'] - self.setting['h'] / self.setting['y'] / 2
-        left = self.player['pos_x'] * self.setting['h'] / self.setting['x'] - self.setting['w'] / self.setting['x'] / 2
+        top = self.player['pos_y'] * settings.MAP['h'] / settings.MAP['y'] - settings.MAP['h'] / settings.MAP['y'] / 2
+        left = self.player['pos_x'] * settings.MAP['h'] / settings.MAP['x'] - settings.MAP['w'] / settings.MAP['x'] / 2
         if top < 0:
             top *= -1
         if left < 0:
@@ -73,11 +72,11 @@ def worldmap_render(request):
                 map.player['pos_y'] -= 1
                 is_moving = True
         if 'Down' in request.POST:
-            if (map.player['pos_y'] + 1) <= map.setting['y']:
+            if (map.player['pos_y'] + 1) <= settings.MAP['y']:
                 map.player['pos_y'] += 1
                 is_moving = True
         if 'Right' in request.POST:
-            if (map.player['pos_x'] + 1) <= map.setting['x']:
+            if (map.player['pos_x'] + 1) <= settings.MAP['x']:
                 map.player['pos_x'] += 1
                 is_moving = True
         if 'Left' in request.POST:
