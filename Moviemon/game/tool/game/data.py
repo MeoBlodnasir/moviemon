@@ -14,11 +14,15 @@ class Data():
     moviemon = ''
     player = {}
     saves = []
-    if not glob.glob('saved_game/slota*'): 
+    is_movies_found = False
+    movie = {}
+    moviemon_captured = []
+    is_captured = False
+    if not glob.glob('saved_game/slota*'):
         saves.append({'name': 'a', 'free': True, 'score' : 0})
-    if not glob.glob('saved_game/slotb*'): 
+    if not glob.glob('saved_game/slotb*'):
         saves.append({'name': 'b', 'free': True, 'score' : 0})
-    if not glob.glob('saved_game/slotc*'): 
+    if not glob.glob('saved_game/slotc*'):
         saves.append({'name': 'c', 'free': True, 'score' : 0})
     for i in os.listdir('saved_game'):
         if os.path.isfile(os.path.join('saved_game',i)) and 'slot' in i:
@@ -48,10 +52,23 @@ class Data():
                 self.saves = value
             elif key == 'player':
                 self.player = value
+            elif key == 'is_movies_found':
+                self.is_movies_found = value
+            elif key == 'movie':
+                self.movie = value
+            elif key == 'is_captured':
+                self.is_captured = value
+            elif key == 'moviemon_captured':
+                self.moviemon_captured = value
+
     def dump(self):
-        return {'movies': self.movies, 'player_strength' : self.player_strength, 'score': self.score, 'saves': self.saves, 'player': self.player}
+        return {'movies': self.movies, 'player_strength' : self.player_strength, 'score': self.score, 'saves': self.saves, 'player': self.player, 'is_movies_found': self.is_movies_found, 'movie':self.movie, 'is_captured': self.is_captured,'moviemon_captured' : self.moviemon_captured}
     def get_random_movie(self):
-        return random.choice(list(self.movies))
+        movie = random.choice(list(self.movies))
+        for v in self.moviemon_captured:
+            if v['title'] == movie['title']:
+                return self.get_random_movie()
+        return movie
     def get_movies(self):
         return self.movies
     def get_movie(self, title):
@@ -79,10 +96,8 @@ class Data():
         if os.path.isfile('saved_game/tmp_save'):
             self.load(pickle.load(open("saved_game/tmp_save", "rb")))
         else:
-            self.load({'player': {'pos_x': 0, 'pos_y': 0}, 'score': 0, 'player_strength': 0})
+            self.load({'player': {'pos_x': 0, 'pos_y': 0}, 'score': 0, 'player_strength': 0, 'is_movies_found': False, 'moviemon_captured': []})
             self.save_tmp()
 
     def save_tmp(self):
-        # print(self.dump())
-        print('save_tmp', self.player_strength)
         pickle.dump(self.dump(), open("saved_game/tmp_save", "wb+" ))

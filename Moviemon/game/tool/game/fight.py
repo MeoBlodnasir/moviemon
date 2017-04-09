@@ -10,6 +10,7 @@ class fight(Data):
     launch = False
     def __init__(self, moviemon=''):
         print('---------init------------')
+        self.load_default_settings()
         self.load_tmp()
         self.moviemon = self.get_movie(moviemon)
         self.is_captured = False
@@ -27,12 +28,12 @@ class fight(Data):
     def set_moviemon(self, moviemon):
         self.mess = ''
         self.is_captured = False
-        fight.launch = False
-        self.load_tmp()
+        # self.launch = False
+        # self.load_tmp()
         self.moviemon = self.get_movie(moviemon)
-        for v in self.movies:
-            if v['title'] == self.moviemon['title']:
-                self.is_captured = True
+        # for v in self.movies:
+        #     if v['title'] == self.moviemon['title']:
+        #         self.is_captured = True
 
     def chance_to_catch(self):
         c = 50 - (float(self.moviemon['rating']) * 10) + (float(self.player_strength) * 5)
@@ -42,18 +43,32 @@ class fight(Data):
             c = 90
         return int(c)
 
+    def is_captured_list(self, target):
+        print('list', self.moviemon_captured)
+        for v in self.moviemon_captured:
+            if v['title'] == target['title']:
+                return True
+        return False
+
     def launch_movieball(self):
-        if self.player_strength == 0 or self.is_captured:
+        print('ll', self.player_strength, self.is_captured)
+        if self.player_strength == 0:
+            self.mess = "No more movieballs !"
             return
+        if self.is_captured_list(self.moviemon):
+            self.mess = "You catched it"
+            return
+        print('  ll  pp ')
         fight.launch = True
         c = self.chance_to_catch()
         r = random.randrange(0, 100)
         if r <= c:
             self.is_captured = True
-            self.movies.append(self.moviemon)
+            self.moviemon_captured.append(self.moviemon)
             self.mess = "You catched it"
         else:
             self.mess = "You missed !"
+        self.is_movies_found = False
         self.player_strength -= 1
         self.save_tmp()
 
@@ -64,6 +79,7 @@ def fight_render(request, moviemon):
     if 'B' in request.POST :
         return(HttpResponseRedirect('/worldmap'))
     if 'A' in request.POST :
+        print('f A')
         battle.launch_movieball()
 
     return render(request, "game/worldmap.html", {'map':battle})
