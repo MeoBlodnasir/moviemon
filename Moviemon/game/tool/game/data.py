@@ -3,6 +3,9 @@ import json
 from django.conf import settings
 import random
 import pickle
+import glob
+import os
+
 
 class Data():
 
@@ -11,7 +14,17 @@ class Data():
     score = 0
     moviemon = ''
     player = {}
-    saves = [{'name': 'a', 'free': True, 'score' : 0},{'name': 'b', 'free': True, 'score' : 0},{'name': 'c', 'free': True, 'score' : 0}]
+    saves = []
+    if not glob.glob('saved_game/slota*'): 
+        saves.append({'name': 'a', 'free': True, 'score' : 0})
+    if not glob.glob('saved_game/slotb*'): 
+        saves.append({'name': 'b', 'free': True, 'score' : 0})
+    if not glob.glob('saved_game/slotc*'): 
+        saves.append({'name': 'c', 'free': True, 'score' : 0})
+    for i in os.listdir('saved_game'):
+        if os.path.isfile(os.path.join('saved_game',i)) and 'slot' in i:
+            saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])})
+
 
     def load_default_settings(self):
         for elem in settings.MOVIES:
@@ -55,8 +68,10 @@ class Data():
         if (slot == 'a' or slot == 'b' or slot == 'c'):
             for elem in self.saves:
                 if elem['name'] == slot and elem['free'] == False:
-                    pickle.dump(pickle.load(open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "rb")),open("saved_game/tmp_save", "rb"))
+                    pickle.dump(pickle.load(open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "rb")),open("saved_game/tmp_save", "wb"))
                     self.load(pickle.load(open("saved_game/tmp_save", "rb")))
+                    return 1
+        return -1
 
     def load_tmp(self):
         self.load(pickle.load(open("saved_game/tmp_save", "rb")))

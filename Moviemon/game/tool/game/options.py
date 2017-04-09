@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from . import elements as e
 from .data import Data
 from .elem import Text
+import os
 
 class Options(Data):
     def __init__(self):
@@ -19,6 +20,8 @@ def options_render(request):
         elif 'A' in request.POST:
             return HttpResponseRedirect('/options/save_game')
         elif 'B' in request.POST:
+            if (os.path.isfile("saved_game/tmp_save")):
+                os.remove("saved_game/tmp_save")
             return HttpResponseRedirect('/')
 
     return render(request, "game/options.html", {'options': options})
@@ -91,8 +94,10 @@ def load_render(request):
                 return render(request, "game/load.html", {'load': Load()})
         if 'A' in request.POST:
             s = Load()
-            s.load_slot(s.saves[Load.marker]['name'])
-            return render(request, "game/load.html", {'load': Load()})
+            if s.load_slot(s.saves[Load.marker]['name']) == 1:
+                return HttpResponseRedirect('/worldmap')
+            else :
+                return render(request, "game/load.html", {'load': Load()})
         if 'B' in request.POST:
             return HttpResponseRedirect('/options')
 
