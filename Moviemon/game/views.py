@@ -6,6 +6,7 @@ from .tool.game.elem import Text
 from .tool.game.worldmap import worldmap, worldmap_render
 from .tool.game.options import Options, options_render, save_render, load_render
 from .tool.game.titlescreen import Titlescreen, titlescreen_render
+from .tool.game.fight import fight, fight_render
 # Create your views here.
 
 def titlescreen(request):
@@ -14,8 +15,8 @@ def titlescreen(request):
 def worldmap(request):
     return (worldmap_render(request))
 
-def fight(request):
-    return (fight_render(request))
+def fight(request, movimone=''):
+    return (fight_render(request, movimone))
 
 def options(request):
     return (options_render(request))
