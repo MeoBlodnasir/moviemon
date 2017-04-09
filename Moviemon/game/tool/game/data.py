@@ -6,7 +6,6 @@ import pickle
 import glob
 import os
 
-
 class Data():
 
     movies = []
@@ -27,6 +26,7 @@ class Data():
 
 
     def load_default_settings(self):
+        self.setting = {'x': 10, 'y' : 10, 'h' : 1000, 'w' : 1000}
         for elem in settings.MOVIES:
             r = requests.get("http://www.omdbapi.com/?t=" + elem.replace(" ", "+"))
             print(elem, r)
@@ -40,15 +40,13 @@ class Data():
             if key == 'movies':
                 self.movies = value
             elif key == 'player_strength':
-                print('self:', self.player_strength)
-                print('value:', value)
                 self.player_strength = value
             elif key == 'score':
                 self.score = value
             elif key == 'saves':
                 self.saves = value
             elif key == 'player':
-                self.player = str(value)
+                self.player = value
     def dump(self):
         return {'movies': self.movies, 'player_strength' : self.player_strength, 'score': self.score, 'saves': self.saves, 'player': self.player}
     def get_random_movie(self):
@@ -74,7 +72,11 @@ class Data():
         return -1
 
     def load_tmp(self):
-        self.load(pickle.load(open("saved_game/tmp_save", "rb")))
+        if os.path.isfile('saved_game/tmp_save'):
+            self.load(pickle.load(open("saved_game/tmp_save", "rb")))
+        else:
+            self.load({'player': {'pos_x': 0, 'pos_y': 0}, 'score': 0, 'player_strength': 0})
+            self.save_tmp()
 
     def save_tmp(self):
         # print(self.dump())

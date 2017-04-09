@@ -10,20 +10,20 @@ from .data import Data
 
 class worldmap(Data):
     movieballs = 0
+    is_movies_found = False
     """docstring for worldmap."""
-    def __init__(self, setting, player):
+    def __init__(self):
         self.load_default_settings()
-        self.setting = setting
-        self.player = player
-        self.is_movies_found = False
-        self.create_map(setting, player, False)
+        self.load_tmp()
+        # worldmap.is_movies_found = False
+        self.create_map(False)
 
     def __str__(self):
         return str(self.map)
 
     def random_meet(self, is_moving):
         attr = {}
-        self.is_movies_found = False
+        worldmap.is_movies_found = False
         if is_moving:
             is_movieball = False
             if random.randrange(0, 3) == 0:
@@ -34,19 +34,12 @@ class worldmap(Data):
             if is_movieball == False:
                 if random.randrange(0, 3) == 0:
                     movie = self.get_random_movie()
-                    self.is_movies_found = True
+                    worldmap.is_movies_found = True
                     self.movie = self.get_random_movie()
-                    self.__class__.moviemon = self.movie
                     attr = {'src':'http://www.citel.fr/playerfiles/medias/photo/Foudre_bleu.gif'}
         return attr
 
-    def create_map(self, setting=None, player=None, is_moving=False):
-
-        if setting == None:
-            self.setting = self.setting
-        else:
-            self.setting = setting
-        self.player = player
+    def create_map(self, is_moving=False):
         self.random_meet(True)
         top = self.player['pos_y'] * self.setting['h'] / self.setting['y'] - self.setting['h'] / self.setting['y'] / 2
         left = self.player['pos_x'] * self.setting['h'] / self.setting['x'] - self.setting['w'] / self.setting['x'] / 2
@@ -59,46 +52,46 @@ class worldmap(Data):
         content = []
         content.append(player)
 
-        if self.is_movies_found:
+        if worldmap.is_movies_found:
             content.append(e.Div(Text('Enter a for the fight with ' + str(self.movie['title']))))
         content.append(e.Div(Text(str(self.player_strength))))
         self.map = e.Div(content, attr={'class': 'container'})
-        print('save')
+
         self.save_tmp()
 
 setting = {'x': 10, 'y' : 10, 'h' : 1000, 'w' : 1000}
 player = {'pos_x': 0, 'pos_y':0}
 
-map = worldmap(setting, player)
+
 
 
 def worldmap_render(request):
-
+    map = worldmap()
     is_moving = False
 
     if (request.method == 'POST'):
         if 'A' in request.POST :
-            if map.is_movies_found:
+            if worldmap.is_movies_found:
                 return(HttpResponseRedirect('/battle/' + str(map.movie['title']).replace(' ', '_')))
         if 'Up' in request.POST:
-            if (player['pos_y'] - 1) >= 0:
-                player['pos_y'] -= 1
+            if (map.player['pos_y'] - 1) >= 0:
+                map.player['pos_y'] -= 1
                 is_moving = True
         if 'Down' in request.POST:
-            if (player['pos_y'] + 1) < setting['y']:
-                player['pos_y'] += 1
+            if (map.player['pos_y'] + 1) < setting['y']:
+                map.player['pos_y'] += 1
                 is_moving = True
         if 'Right' in request.POST:
-            if (player['pos_x'] + 1) < setting['x']:
-                player['pos_x'] += 1
+            if (map.player['pos_x'] + 1) < setting['x']:
+                map.player['pos_x'] += 1
                 is_moving = True
         if 'Left' in request.POST:
-            if (player['pos_x'] - 1) >= 0:
-                player['pos_x'] -= 1
+            if (map.player['pos_x'] - 1) >= 0:
+                map.player['pos_x'] -= 1
                 is_moving = True
         if 'Start' in request.POST:
             return HttpResponseRedirect('/options')
     if is_moving:
-        map.create_map(setting, player, is_moving)
+        map.create_map(is_moving)
     # movieballs_nb =
     return render(request, "game/worldmap.html", {'map':map})
