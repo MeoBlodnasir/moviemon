@@ -64,7 +64,7 @@ class fight(Data):
         r = random.randrange(0, 100)
         if r <= c:
             self.is_captured = True
-            self.score += 1
+            Data.score += 1
             self.moviemon_captured.append(self.moviemon)
             self.mess = "You catched it"
         else:

@@ -86,6 +86,7 @@ class Data():
                 for elem in self.saves:
                     if elem['name'] == slot:
                         elem['free'] = False
+                        elem['score'] = self.score
         except Exception as e:
             print(e)
 
