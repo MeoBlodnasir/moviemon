@@ -26,7 +26,10 @@ class Data():
         saves.append({'name': 'c', 'free': True, 'score' : 0})
     for i in os.listdir('saved_game'):
         if os.path.isfile(os.path.join('saved_game',i)) and 'slot' in i:
-            saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])}) #TO CHANGE
+            if i[7:8] == '_':
+                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])}) 
+            else:
+                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:8])}) 
 
 
     def load_default_settings(self):
@@ -77,27 +80,39 @@ class Data():
                 return elem
         return {'title': 'unknown'}
     def save_slot(self, slot):
-        if slot == 'a' or slot == 'b' or slot == 'c':
-            pickle.dump(pickle.load(open("saved_game/tmp_save", "rb")), open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "wb+" ))
-            for elem in self.saves:
-                if elem['name'] == slot:
-                    elem['free'] = False
+        try:
+            if slot == 'a' or slot == 'b' or slot == 'c':
+                pickle.dump(pickle.load(open("saved_game/tmp_save", "rb")), open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "wb+" ))
+                for elem in self.saves:
+                    if elem['name'] == slot:
+                        elem['free'] = False
+        except Exception as e:
+            print(e)
 
     def load_slot(self, slot):
-        if (slot == 'a' or slot == 'b' or slot == 'c'):
-            for elem in self.saves:
-                if elem['name'] == slot and elem['free'] == False:
-                    pickle.dump(pickle.load(open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "rb")),open("saved_game/tmp_save", "wb"))
-                    self.load(pickle.load(open("saved_game/tmp_save", "rb")))
-                    return 1
-        return -1
+        try:
+            if (slot == 'a' or slot == 'b' or slot == 'c'):
+                for elem in self.saves:
+                    if elem['name'] == slot and elem['free'] == False:
+                        pickle.dump(pickle.load(open("saved_game/slot{0}_{1}_15.mmg".format(slot, self.score), "rb")),open("saved_game/tmp_save", "wb"))
+                        self.load(pickle.load(open("saved_game/tmp_save", "rb")))
+                        return 1
+            return -1
+        except Exception as e:
+            print(e)
 
     def load_tmp(self):
-        if os.path.isfile('saved_game/tmp_save'):
-            self.load(pickle.load(open("saved_game/tmp_save", "rb")))
-        else:
-            self.load({'player': {'pos_x': 0, 'pos_y': 0}, 'score': 0, 'player_strength': 0, 'is_movies_found': False, 'moviemon_captured': []})
-            self.save_tmp()
+        try:
+            if os.path.isfile('saved_game/tmp_save'):
+                self.load(pickle.load(open("saved_game/tmp_save", "rb")))
+            else:
+                self.load({'player': {'pos_x': 0, 'pos_y': 0}, 'score': 0, 'player_strength': 0, 'is_movies_found': False, 'moviemon_captured': []})
+                self.save_tmp()
+        except Exception as e:
+            print(e)
 
     def save_tmp(self):
-        pickle.dump(self.dump(), open("saved_game/tmp_save", "wb+" ))
+        try:
+            pickle.dump(self.dump(), open("saved_game/tmp_save", "wb+" ))
+        except Exception as e:
+            print(e)
