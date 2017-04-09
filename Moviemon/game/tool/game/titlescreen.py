@@ -10,6 +10,7 @@ class Titlescreen(Data):
         self.load_default_settings()
         self.load_tmp()
         content = []
+        content.append(Text('- Moviemon -\n'))
         content.append(Text("A - New Game<br/>B - Load<br/>"))
         style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
         self.titlescreen = e.Div(content, attr={'class':'container', 'style': style})

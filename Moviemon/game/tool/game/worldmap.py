@@ -15,12 +15,14 @@ class worldmap(Data):
         self.load_default_settings()
         self.load_tmp()
         self.create_map(False)
+        self.is_message = False
 
     def __str__(self):
         return str(self.map)
 
     def random_meet(self, is_moving):
         attr = {}
+        self.is_message = False
         if is_moving:
             self.is_movies_found = False
             is_movieball = False
@@ -28,6 +30,7 @@ class worldmap(Data):
                 is_movieball = True
                 self.movieballs += 1
                 self.player_strength += 1
+                self.is_message = True
                 attr = {'src':'http://belleetcultivee.com/wp-content/uploads/2012/02/cd.gif'}
             if is_movieball == False:
                 if random.randrange(0, 3) == 0:
@@ -54,7 +57,10 @@ class worldmap(Data):
         content.append(e.Div(Text(str(self.player_strength))))
         if self.is_movies_found:
             content.append(e.Div(Text('Enter a for the fight with ' + str(self.movie['title']))))
+        if self.is_message:
+            content.append(e.Div(Text('Movieball found')))
         style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
+
         self.map = e.Div(content, attr={'class': 'container', 'style': style})
 
         self.save_tmp()
