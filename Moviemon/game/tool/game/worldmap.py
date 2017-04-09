@@ -73,8 +73,8 @@ def worldmap_render(request):
     is_moving = False
 
     if (request.method == 'POST'):
-        if 'A' in request.POST:
-            pass
+        if 'A' in request.POST and map.is_movies_found:
+            HttpResponseRedirect('/fight/' + str(map.movie['title']).replace(' ', '_'))
         if 'Up' in request.POST:
             if (user['pos_y'] - 1) >= 0:
                 user['pos_y'] -= 1
@@ -91,6 +91,8 @@ def worldmap_render(request):
             if (user['pos_x'] - 1) >= 0:
                 user['pos_x'] -= 1
                 is_moving = True
+        if 'Start' in request.Post:
+            HttpResponseRedirect('/options')
     if is_moving:
         map.create_map(setting, user, is_moving)
     movieballs_nb = e.Div(Text(str(map.player_strength)))
