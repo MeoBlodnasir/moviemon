@@ -7,6 +7,8 @@ import os
 class Moviedex(Data):
     marker = 0
     def __init__(self):
+        self.load_default_settings()
+        self.load_tmp()
         i = 0
         content = []
         m = self.get_captured_movies()
@@ -23,6 +25,8 @@ class Moviedex(Data):
 
 class Movie(Data):
     def __init__(self, movie):
+        self.load_default_settings()
+        self.load_tmp()
         content = []
         self.movie = self.get_movie(movie.replace("_", " "))
         content.append(Text(str(self.movie)))
