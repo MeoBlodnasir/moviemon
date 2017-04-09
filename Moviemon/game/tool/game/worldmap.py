@@ -90,5 +90,4 @@ def worldmap_render(request):
             return HttpResponseRedirect('/moviedex')
     if is_moving:
         map.create_map(is_moving)
-    # movieballs_nb =
     return render(request, "game/worldmap.html", {'map':map})
