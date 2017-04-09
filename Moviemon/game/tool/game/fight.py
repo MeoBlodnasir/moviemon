@@ -7,32 +7,35 @@ from .elem import Text
 from .data import Data
 
 class fight(Data):
+    launch = False
     def __init__(self, moviemon=''):
         print('---------init------------')
         self.load_tmp()
         self.moviemon = self.get_movie(moviemon)
         self.is_captured = False
-        self.launch = False
         self.mess = ''
 
     def __str__(self):
         content = []
         content.append(e.Div(e.Text(str(self.moviemon['title']) + ' force: ' + str(self.moviemon['rating']) )))
         content.append(e.Div(e.Text('A - Launch movieball')))
-        content.append(e.Div(Text('Player force: ' + str(battle.player_strength))))
-        if self.launch:
-            pass
+        content.append(e.Div(Text('Player force: ' + str(self.player_strength))))
+        if fight.launch:
+            content.append(e.Div(e.Text(self.mess)))
         return str(e.Div(content, attr={'class':'container'}))
 
     def set_moviemon(self, moviemon):
         self.mess = ''
         self.is_captured = False
-        self.launch = False
+        fight.launch = False
         self.load_tmp()
         self.moviemon = self.get_movie(moviemon)
+        for v in self.movies:
+            if v['title'] == self.moviemon['title']:
+                self.is_captured = True
 
     def chance_to_catch(self):
-        c = 50 - (self.moviemon['rating'] * 10) + (self.player_strength * 5)
+        c = 50 - (float(self.moviemon['rating']) * 10) + (float(self.player_strength) * 5)
         if c < 1:
             c = 1
         if c > 99:
@@ -40,24 +43,27 @@ class fight(Data):
         return int(c)
 
     def launch_movieball(self):
-        if self.player_strength == 0:
+        if self.player_strength == 0 or self.is_captured:
             return
-        self.launch = True
+        fight.launch = True
         c = self.chance_to_catch()
-        r = random(0, 100)
+        r = random.randrange(0, 100)
         if r <= c:
             self.is_captured = True
-            self.movie.append(self.moviemon)
+            self.movies.append(self.moviemon)
+            self.mess = "You catched it"
+        else:
+            self.mess = "You missed !"
         self.player_strength -= 1
         self.save_tmp()
 
-battle = fight()
-
 def fight_render(request, moviemon):
     moviemon = moviemon.replace('_', ' ')
-    if battle.moviemon != moviemon:
-        battle.set_moviemon(moviemon)
+    battle = fight()
+    battle.set_moviemon(moviemon)
     if 'B' in request.POST :
         return(HttpResponseRedirect('/worldmap'))
+    if 'A' in request.POST :
+        battle.launch_movieball()
 
     return render(request, "game/worldmap.html", {'map':battle})
