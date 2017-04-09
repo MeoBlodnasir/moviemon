@@ -21,7 +21,7 @@ class fight(Data):
         content.append(e.Div(e.Text('A - Launch movieball')))
         content.append(e.Div(Text('Player force: ' + str(battle.player_strength))))
         if self.launch:
-
+            pass
         return str(e.Div(content, attr={'class':'container'}))
 
     def set_moviemon(self, moviemon):
