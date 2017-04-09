@@ -12,14 +12,19 @@ class worldmap(Data):
     movieballs = 0
     """docstring for worldmap."""
     def __init__(self, setting, user):
+        print("init --------------------------")
         self.load_default_settings()
         self.setting = setting
         self.user = user
         self.is_movies_found = False
         self.create_map(setting, user, False)
 
+    def __str__(self):
+        return str(self.map)
+
     def random_meet(self, is_moving):
         attr = {}
+        self.is_movies_found = False
         if is_moving:
             is_movieball = False
             if random.randrange(0, 3) == 0:
@@ -31,6 +36,7 @@ class worldmap(Data):
                 if random.randrange(0, 3) == 0:
                     movie = self.get_random_movie()
                     self.is_movies_found = True
+                    self.movie = self.get_random_movie()
                     attr = {'src':'http://www.citel.fr/userfiles/medias/photo/Foudre_bleu.gif'}
         return attr
 
@@ -40,33 +46,31 @@ class worldmap(Data):
         else:
             self.setting = setting
         self.user = user
-        table = []
-        y = 0
-        while y < self.setting['y']:
-            tr = []
-            x = 0
-            while x < self.setting['x']:
-                if x == self.user['pos_x'] and y == self.user['pos_y']:
-                    attr = self.random_meet(is_moving)
-                    td = e.Td(e.Div([e.Img(attr=attr ), Text('Yo') ]))
-                else:
-                    td = e.Td(e.Div(attr={'class': 'cell'}))
-                tr.append(td)
-                x += 1
-            y += 1
+        self.random_meet(True)
+        top = self.user['pos_y'] * self.setting['h'] / self.setting['y'] - self.setting['h'] / self.setting['y'] / 2
+        left = self.user['pos_x'] * self.setting['h'] / self.setting['x'] - self.setting['w'] / self.setting['x'] / 2
+        if top < 0:
+            top *= -1
+        if left < 0:
+            left *= -1
+        style = 'top:' + str(int(top)) + 'px;' + ' left:' + str(int(left)) + 'px; position: absolute'
+        player = e.Div(Text('X'), attr={'class':'player', 'style':style})
+        content = []
+        content.append(player)
 
-            table.append(e.Tr(tr))
-        self.map = e.Table(table)
+        if self.is_movies_found:
+            content.append(e.Div(Text('Enter a for the fight with ' + str(self.movie['title']))))
+        self.map = e.Div(content, attr={'class': 'container', 'style':'height: 1000px; width: 1000px; position:relative'})
 
-setting = {'x': 10, 'y' : 10}
+setting = {'x': 10, 'y' : 10, 'h' : 1000, 'w' : 1000}
 user = {'pos_x': 0, 'pos_y':0}
 
 map = worldmap(setting, user)
-# map.create_map(setting, user, is_moving)
+
 
 def worldmap_render(request):
+
     is_moving = False
-    map.is_movies_found = False
 
     if (request.method == 'POST'):
         if 'A' in request.POST:
@@ -87,12 +91,7 @@ def worldmap_render(request):
             if (user['pos_x'] - 1) >= 0:
                 user['pos_x'] -= 1
                 is_moving = True
-    mess_a = ''
     if is_moving:
         map.create_map(setting, user, is_moving)
-    if map.is_movies_found:
-        movie = map.get_random_movie()
-        mess_a = e.Div(Text('Enter a for the fight with ' + str(movie['title'])))
-    # page = Page(e.Div(map.map))
     movieballs_nb = e.Div(Text(str(map.player_strength)))
-    return render(request, "game/worldmap.html", {'map':map.map, 'mess_a':mess_a, 'movieballs_nb':movieballs_nb})
+    return render(request, "game/worldmap.html", {'map':map, 'movieballs_nb':movieballs_nb})
