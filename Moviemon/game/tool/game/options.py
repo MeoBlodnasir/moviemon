@@ -69,6 +69,7 @@ def save_render(request):
 
 class Load(Data):
     marker = 0
+    loaded = False
     def __init__(self):
         i = 0;
         content = []
@@ -81,12 +82,14 @@ class Load(Data):
             else:
                 content.append(Text("   score: " + str(elem['score']) + "<br/>"))
             i += 1
-        content.append(Text('A - Load<br/>B - Cancel</br>'))
+        if Load.loaded == False:
+            content.append(Text('A - Load<br/>B - Cancel</br>'))
+        else:
+            content.append(Text('A - start game<br/>B - Cancel</br>'))
         style = 'height:' + str(settings.MAP['h']) + 'px; width:' +  str(settings.MAP['w']) + 'px;'
         self.text = e.Div(content, attr={'class':'container', 'style':style})
     def __str__(self):
         return str(self.text)
-
 
 def load_render(request):
     if (request.method == 'POST'):
@@ -96,10 +99,14 @@ def load_render(request):
         if 'Up' in request.POST and Load.marker > 0:
                 Load.marker -= 1
                 return render(request, "game/load.html", {'load': Load()})
+        if Load.loaded == True:
+            if 'A' in request.POST:
+                Load.loaded = False
+                return HttpResponseRedirect('/worldmap')
         if 'A' in request.POST:
             s = Load()
             if s.load_slot(s.saves[Load.marker]['name']) == 1:
-                return HttpResponseRedirect('/worldmap')
+                Load.loaded = True
             else :
                 return render(request, "game/load.html", {'load': Load()})
         if 'B' in request.POST:
