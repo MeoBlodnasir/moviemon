@@ -95,3 +95,5 @@ local_settings.py
 db.sqlite3
 media
 *.swp
+tmp_save
+*.mmg
