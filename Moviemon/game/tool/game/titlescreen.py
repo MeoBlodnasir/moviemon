@@ -5,8 +5,10 @@ from .elem import Text
 import os.path
 
 
-class Titlescreen():
+class Titlescreen(Data):
     def __init__(self):
+        self.load_default_settings()
+        self.load_tmp()
         content = []
         content.append(Text("A - New Game<br/>B - Load<br/>"))
         self.titlescreen = e.Div(content, attr={'class':'containter'})
