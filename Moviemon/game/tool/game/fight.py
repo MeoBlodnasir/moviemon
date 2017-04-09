@@ -18,6 +18,7 @@ class fight(Data):
 
     def __str__(self):
         content = []
+        content.append(e.Img(attr={'src':str(self.moviemon['poster']) }))
         content.append(e.Div(e.Text(str(self.moviemon['title']) + ' force: ' + str(self.moviemon['rating']) )))
         content.append(e.Div(e.Text('A - Launch movieball')))
         content.append(e.Div(Text('Player force: ' + str(self.player_strength))))
@@ -29,12 +30,7 @@ class fight(Data):
     def set_moviemon(self, moviemon):
         self.mess = ''
         self.is_captured = False
-        # self.launch = False
-        # self.load_tmp()
         self.moviemon = self.get_movie(moviemon)
-        # for v in self.movies:
-        #     if v['title'] == self.moviemon['title']:
-        #         self.is_captured = True
 
     def chance_to_catch(self):
         c = 50 - (float(self.moviemon['rating']) * 10) + (float(self.player_strength) * 5)
