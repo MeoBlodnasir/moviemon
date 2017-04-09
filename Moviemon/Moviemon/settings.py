@@ -136,5 +136,10 @@ MOVIES = [
         "Dallas Buyers Club",
         "Snatch",
         "Jurassic Park",
-        "Alien"
+        "Alien",
+        "La La Land",
+        "Batman",
+        "Matrix",
+        "Rogue One",
+        "In Bruges",
         ]

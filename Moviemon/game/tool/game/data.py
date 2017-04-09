@@ -26,7 +26,10 @@ class Data():
         saves.append({'name': 'c', 'free': True, 'score' : 0})
     for i in os.listdir('saved_game'):
         if os.path.isfile(os.path.join('saved_game',i)) and 'slot' in i:
-            saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])}) #TO CHANGE
+            if i[7:8] == '_':
+                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:7])}) 
+            else:
+                saves.append({'name': i[4:5], 'free': False, 'score': int(i[6:8])}) 
 
 
     def load_default_settings(self):
